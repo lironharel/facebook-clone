@@ -10,7 +10,8 @@ app.use(express.json());
 
 const JWT_SECRET = 'secretkey';
 
-mongoose.connect('mongodb://localhost/facebook_clone', {
+const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/facebook_clone';
+mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -72,4 +73,8 @@ app.get('/api/posts', authMiddleware, async (req, res) => {
   res.json(posts);
 });
 
-app.listen(5000, () => console.log('Server started on port 5000'));
+if (require.main === module) {
+  app.listen(5000, () => console.log('Server started on port 5000'));
+}
+
+module.exports = app;
